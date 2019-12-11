@@ -1,0 +1,10 @@
+<APIKeyManager>
+    <KeyManagerClientImpl>org.wso2.okta.client.OktaOAuthClient</KeyManagerClientImpl>
+    <Configuration>
+        <oktaInstanceUrl>{Okta Instance URL}</oktaInstanceUrl>
+        <authorizationServerId>{Okta Authorization Server Name/ID}</authorizationServerId>
+        <apiKey>{Okta Authorization Server API Token}</apiKey>
+        <client_id>{Okta Application Client ID}</client_id>
+        <client_secret>{Okta Application Client Secret}</client_secret>
+    </Configuration>
+</APIKeyManager>
