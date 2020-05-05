@@ -851,6 +851,7 @@ public class OktaOAuthClient extends AbstractKeyManager {
         appInfo.addParameter(OktaConstants.CLIENT_INITIATE_LOGIN_URI, initiateLoginUri);
         
         appInfo.addParameter(OktaConstants.ADDITIONAL_PROPERTIES, responseMap.toString());
+        appInfo.addParameter(ApplicationConstants.OAUTH_CLIENT_NAME, responseMap.get(OktaConstants.CLIENT_NAME));
 
         return appInfo;
     }
@@ -1113,5 +1114,33 @@ public class OktaOAuthClient extends AbstractKeyManager {
         ApiMgtDAO apiMgtDAO = ApiMgtDAO.getInstance();
         Map<String, Set<Scope>> scopes = apiMgtDAO.getScopesForAPIS(apiIdsString);
         return scopes;
+    }
+
+    /**
+     * method to update application owner (change ownership from admin portal :
+     * supported from 2.6)
+     * 
+     * @param oAuthAppRequest Parameters to be passed to Authorization Server,
+     *                        encapsulated as an {@code OAuthAppRequest}
+     * @param owner
+     * @return Details of updated OAuth Client
+     * @throws APIManagementException This is the custom exception class for API
+     *                                management
+     */
+    public OAuthApplicationInfo updateApplicationOwner(OAuthAppRequest oAuthAppRequest, String owner)
+            throws APIManagementException {
+        OAuthApplicationInfo oAuthApplicationInfo = oAuthAppRequest.getOAuthApplicationInfo();
+        String clientId = oAuthApplicationInfo.getClientId();
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Updating application owner for the Consumer Key: %s", clientId));
+        }
+
+        try {
+            return updateApplication(oAuthAppRequest);
+        } catch (Exception e) {
+            handleException("Error occurred while updating OAuth application owner to " + owner, e);
+        }
+
+        return null;
     }
 }
